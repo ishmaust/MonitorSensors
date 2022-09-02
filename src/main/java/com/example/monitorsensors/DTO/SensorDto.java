@@ -1,13 +1,11 @@
 package com.example.monitorsensors.DTO;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class SensorDto {
+public class SensorDto implements DtoMarker {
 
   @NotNull
   @NotBlank

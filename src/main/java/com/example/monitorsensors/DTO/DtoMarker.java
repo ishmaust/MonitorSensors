@@ -1,2 +1,5 @@
-package com.example.monitorsensors.DTO;public interface Dto {
+package com.example.monitorsensors.DTO;
+
+public interface DtoMarker {
+
 }

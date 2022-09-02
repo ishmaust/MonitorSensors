@@ -1,2 +1,5 @@
-package com.example.monitorsensors.entity;public interface EntityEnumMarker {
+package com.example.monitorsensors.entity;
+
+public interface EntityEnumMarker {
+
 }
