@@ -3,7 +3,6 @@ package com.example.monitorsensors.repository;
 import com.example.monitorsensors.entity.Sensor;
 import java.util.List;
 import java.util.Optional;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -55,7 +54,7 @@ public class SensorRepositoryImpl implements SensorRepository{
     Session session = sessionFactory.openSession();
     Transaction transaction = session.beginTransaction();
     List<Sensor> sensors = session.createQuery(
-        "select s from Sensor s where s.name like '%' || :filter || '%'",
+        "select s from Sensor s where s.name like '%' || :filter || '%' or s.model like '%' || :filter || '%'",
         Sensor.class).setParameter("filter", filter).getResultList();
     transaction.commit();
     session.close();

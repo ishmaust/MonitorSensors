@@ -1,12 +1,12 @@
 create table sensor_type
 (
-    type_name varchar(10) not null unique ,
+    type_name varchar(15) not null unique ,
     PRIMARY KEY (type_name)
 );
 
 create table sensor_unit
 (
-    unit_name varchar(10) not null unique ,
+    unit_name varchar(15) not null unique ,
     PRIMARY KEY (unit_name)
 );
 
@@ -16,8 +16,8 @@ create table sensor
     model       varchar(15) not null,
     range_from  int,
     range_to    int,
-    type_name   varchar(10),
-    unit_name   varchar(10),
+    type_name   varchar(15),
+    unit_name   varchar(15),
     location    varchar(40),
     description varchar(200),
     PRIMARY KEY (name),
@@ -31,6 +31,7 @@ create table sensor
             ON delete SET NULL
 );
 
-select t from sensor_type as t where t.type_name='type1';
+insert into sensor_type (type_name) VALUES ('pressure'), ('voltage'), ('temperature'), ('humidity');
+insert into sensor_unit (unit_name) values ('bar'), ('voltage'), ('celsius'), ('percent');
 
-select * from sensor as s where s.name like '%n%';
+insert into sensor values ('Barometer', 'ac-23', 22, 45, 'pressure', 'bar', 'kitchen', 'description');

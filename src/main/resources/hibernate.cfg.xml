@@ -9,10 +9,5 @@
     <mapping class="com.example.monitorsensors.entity.Sensor" />
     <mapping class="com.example.monitorsensors.entity.SensorType"/>
     <mapping class="com.example.monitorsensors.entity.SensorUnit"/>
-    <!-- <property name="connection.username"/> -->
-    <!-- <property name="connection.password"/> -->
-
-    <!-- DB schema will be updated if needed -->
-    <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
   </session-factory>
 </hibernate-configuration>

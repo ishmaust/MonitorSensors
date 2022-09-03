@@ -4,10 +4,7 @@ import com.example.monitorsensors.DTO.RangeDto;
 import com.example.monitorsensors.DTO.SensorDto;
 import com.example.monitorsensors.entity.Sensor;
 import com.example.monitorsensors.exception.RangeException;
-import com.example.monitorsensors.service.DaoService;
 import com.example.monitorsensors.service.SensorEnumService;
-import com.example.monitorsensors.service.SensorService;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
