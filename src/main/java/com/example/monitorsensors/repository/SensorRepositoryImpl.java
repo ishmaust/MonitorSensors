@@ -60,4 +60,13 @@ public class SensorRepositoryImpl implements SensorRepository{
     session.close();
     return sensors;
   }
+
+  @Override
+  public void deleteEntity(String name) {
+    Session session = sessionFactory.openSession();
+    Transaction transaction = session.beginTransaction();
+    session.createQuery("delete from Sensor as s where s.name = :name").setParameter("name", name);
+    transaction.commit();
+    session.close();
+  }
 }

@@ -16,6 +16,6 @@ public interface DaoService<entity extends EntityMarker> {
 
   entity updateEntity(entity entity);
 
-  void deleteEntity(int id);
+  entity deleteEntity(String name);
 
 }

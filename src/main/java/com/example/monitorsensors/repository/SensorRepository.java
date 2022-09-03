@@ -13,6 +13,7 @@ public interface SensorRepository {
 
   Optional<Sensor> getSensorEntityByName(String name);
 
-
   List<Sensor> getSensorsByFilter(String filter);
+
+  void deleteEntity(String name);
 }

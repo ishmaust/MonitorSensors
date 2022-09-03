@@ -1,5 +1,6 @@
 package com.example.monitorsensors.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -7,24 +8,39 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+  private final BasicAuthenticationEntryPoint entryPoint;
+
+  @Autowired
+  public SecurityConfiguration(MyBasicAuthenticationEntryPoint entryPoint) {
+    this.entryPoint = entryPoint;
+  }
+
+
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(12);
+  }
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.cors().disable()
+    http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/swagger-ui/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "USER")
-        .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
-        .antMatchers(HttpMethod.PATCH, "/api/**").hasRole("ADMIN")
-        .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+        .antMatchers(HttpMethod.GET).hasAnyRole("USER", "ADMIN")
+        .antMatchers(HttpMethod.POST).hasRole("ADMIN")
+        .antMatchers(HttpMethod.PATCH).hasRole("ADMIN")
+        .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
         .anyRequest()
         .authenticated()
         .and()
@@ -37,23 +53,17 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public UserDetailsService userDetailsService(BCryptPasswordEncoder bCryptPasswordEncoder) {
-    InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-    manager.createUser(User.withUsername("user")
-        .password(bCryptPasswordEncoder.encode("userPass"))
+  public InMemoryUserDetailsManager userDetailsService() {
+    UserDetails user = User.withUsername("user")
+        .password(passwordEncoder().encode("user"))
         .roles("USER")
-        .build());
-    manager.createUser(User.withUsername("admin")
-        .password(bCryptPasswordEncoder.encode("adminPass"))
+        .build();
+    UserDetails admin = User.withUsername("admin")
+        .password(passwordEncoder().encode("admin"))
         .roles("ADMIN")
-        .build());
-    return manager;
+        .build();
+    return new InMemoryUserDetailsManager(user, admin);
   }
 
 
-
-  @Bean
-  public BCryptPasswordEncoder bCryptPasswordEncoder() {
-    return new BCryptPasswordEncoder(12);
-  }
 }

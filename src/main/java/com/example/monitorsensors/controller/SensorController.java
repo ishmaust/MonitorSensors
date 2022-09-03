@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/sensor")
-@SecurityRequirement(name = "javainuseapi")
 public class SensorController {
 
   private final DaoService<Sensor> sensorService;
@@ -61,7 +62,13 @@ public class SensorController {
   @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<SensorDto> updateSensor(@RequestBody @Valid SensorDto sensorDto) {
     sensorService.updateEntity(sensorDtoConverter.getEntity(sensorDto));
-    return new ResponseEntity<>(sensorDto, HttpStatus.CREATED);
+    return new ResponseEntity<>(sensorDto, HttpStatus.OK);
+  }
+
+  @DeleteMapping(value = "{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<SensorDto> deleteSensor(@PathVariable("name") @NotBlank @NotNull String name) {
+    Sensor sensor = sensorService.deleteEntity(name);
+    return new ResponseEntity<>(sensorDtoConverter.getDto(sensor), HttpStatus.OK);
   }
 
 }

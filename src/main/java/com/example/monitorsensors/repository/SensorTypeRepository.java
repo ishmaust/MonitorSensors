@@ -23,12 +23,6 @@ public class SensorTypeRepository implements EnumRepository<SensorType> {
     Session session = sessionFactory.openSession();
     Transaction transaction = session.beginTransaction();
     Optional<SensorType> sensorType = session.byId(SensorType.class).loadOptional(name);
-    /*Optional<SensorType> sensorType = session.createNativeQuery(
-            "select t from sensor_type as t where type_name=:name", SensorType.class)
-        .setParameter("name", name)
-        .setMaxResults(1)
-        .getResultStream()
-        .findFirst();*/
     transaction.commit();
     session.close();
     return sensorType;

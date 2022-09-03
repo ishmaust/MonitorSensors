@@ -54,7 +54,7 @@
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>

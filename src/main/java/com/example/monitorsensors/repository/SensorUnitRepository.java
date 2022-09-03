@@ -22,12 +22,6 @@ public class SensorUnitRepository implements EnumRepository<SensorUnit> {
     Session session = sessionFactory.openSession();
     Transaction transaction = session.beginTransaction();
     Optional<SensorUnit> sensorUnit = session.byId(SensorUnit.class).loadOptional(name);
-    /*Optional<SensorUnit> sensorUnit = session.createNativeQuery(
-            "select u from sensor_unit as u where u.unit_name=:name", SensorUnit.class)
-        .setParameter("name", name)
-        .setMaxResults(1)
-        .getResultStream()
-        .findFirst();*/
     transaction.commit();
     session.close();
     return sensorUnit;

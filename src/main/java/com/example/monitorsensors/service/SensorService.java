@@ -36,7 +36,7 @@ public class SensorService implements DaoService<Sensor> {
   @Override
   public Sensor createEntity(Sensor sensor) {
     if(getOptionalEntity(sensor.getName()).isPresent()) {
-      throw new NotFoundEntityException("asd");
+      throw new NotFoundEntityException(String.format("Sensor with %s name already exist.", sensor.getName()));
     }
 
     sensorRepository.addSensor(sensor);
@@ -45,7 +45,7 @@ public class SensorService implements DaoService<Sensor> {
 
   @Override
   public Sensor updateEntity(Sensor sensor) {
-    if(!getOptionalEntity(sensor.getName()).isPresent()) {
+    if(getOptionalEntity(sensor.getName()).isEmpty()) {
       throw new NotFoundEntityException(String.format("Sensor with %s name not found", sensor.getName()));
     }
 
@@ -54,7 +54,9 @@ public class SensorService implements DaoService<Sensor> {
   }
 
   @Override
-  public void deleteEntity(int id) {
-
+  public Sensor deleteEntity(String name) {
+    Sensor entity = getEntity(name);
+    sensorRepository.deleteEntity(name);
+    return entity;
   }
 }
